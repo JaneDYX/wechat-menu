@@ -1,0 +1,47 @@
+<!--pages/menu/menu.wxml-->
+<view class="menu-page">
+  <!-- 左侧：分类侧栏 -->
+  <view class="category-list">
+    <block wx:for="{{categories}}" wx:for-item="cat" wx:key="name">
+      <view
+        class="category-item {{cat.name === selectedCategory ? 'active' : ''}}"
+        bindtap="onSelectCategory"
+        data-category="{{cat.name}}"
+      >
+        <!-- 竖排每个字 -->
+        <block wx:for="{{cat.chars}}" wx:for-item="ch" wx:key="index">
+          <text class="category-char">{{ch}}</text>
+        </block>
+      </view>
+    </block>
+  </view>
+
+  <!-- 右侧：菜品滚动列表 -->
+  <scroll-view class="dish-list" scroll-y>
+    <view class="menu-container">
+      <block wx:for="{{filteredList}}" wx:for-item="item" wx:key="id">
+        <view class="item" bindtap="goDetail" data-id="{{item.id}}">
+          <!-- 菜品图片 -->
+          <image src="{{item.image}}" class="item-image" mode="aspectFill" />
+
+          <!-- 菜品信息：名称+加号在同一行，下面是摘要 -->
+          <view class="item-info">
+            <view class="item-header">
+              <text class="item-name">{{item.name}}</text>
+              <view
+                catch:tap="addToToday"
+                data-id="{{item.id}}"
+                hover-class="tap-active"
+                class="add-wrapper"
+              >
+                <image src="/images/tab/add.png" class="add-btn" />
+              </view>
+              
+            </view>
+            <text class="item-summary">{{item.summary}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>

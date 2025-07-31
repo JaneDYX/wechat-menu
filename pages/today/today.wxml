@@ -1,0 +1,37 @@
+<!--pages/today/today.wxml-->
+<scroll-view class="today-container" scroll-y>
+  <view class="today-list">
+    <block wx:for="{{todayList}}" wx:key="id" wx:for-item="item">
+      <view class="item">
+        <!-- 左侧图片 -->
+        <image src="{{item.image}}" class="item-image" mode="aspectFill" />
+
+        <!-- 右侧信息 -->
+        <view class="item-info">
+          <!-- 标题行：名称 + 点赞 -->
+          <view class="item-header">
+            <text class="item-name">{{item.name}}</text>
+            <view
+              class="like-wrapper"
+              bindtap="onLike"
+              data-id="{{item.id}}"
+              hover-class="tap-active"
+            >
+              <!-- <text class="like-text">👍 {{item.likes}}</text> -->
+              <image src="/images/tab/{{item.likes > 0 ? 'like-active' : 'like'}}.png"
+                     class="like-icon"/>
+              <text class="like-count">{{item.likes}}</text>
+            </view>
+          </view>
+          <!-- 摘要 -->
+          <text class="item-summary">{{item.summary}}</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态提示 -->
+    <block wx:if="{{todayList.length === 0}}">
+      <view class="empty-tip">今天还没添加任何菜，快去菜单页挑几道吧～</view>
+    </block>
+  </view>
+</scroll-view>

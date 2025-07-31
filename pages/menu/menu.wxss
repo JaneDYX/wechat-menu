@@ -1,0 +1,85 @@
+/* pages/menu/menu.wxss */
+
+/* 整体左右布局 */
+.menu-page {
+  display: flex;
+  height: 100vh;
+  padding-top: 0rpx; /* 给自定义导航留空 */
+}
+
+/* 左侧分类栏 */
+.category-list {
+  width: 100rpx;
+  background-color: #f5f5f5;
+}
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10rpx 0;
+}
+.category-char {
+  font-size: 24rpx;
+  line-height: 72rpx;
+}
+.category-item.active .category-char {
+  color: #0052CC;
+  font-weight: bold;
+}
+
+/* 右侧菜品滚动区域 */
+.dish-list {
+  flex: 1;
+}
+
+.menu-container {
+  padding: 20rpx;
+}
+
+/* 单个菜品项 */
+.item {
+  display: flex;
+  margin-bottom: 20rpx;
+  border-bottom: 1rpx solid #eee;
+  padding-bottom: 20rpx;
+}
+.item-image {
+  width: 180rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+}
+.item-info {
+  flex: 1;
+  padding-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 名称 + 图片同一行 */
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.item-name {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+/* 加号图片 */
+.add-btn {
+  width: 40rpx;
+  height: 40rpx;
+}
+/* 点击反馈 */
+.tap-active {
+  opacity: 0.6;
+}
+
+/* 材料摘要 */
+.item-summary {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 10rpx;
+}

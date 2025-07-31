@@ -1,0 +1,90 @@
+/* pages/today/today.wxss */
+
+/* 滚动容器，给自定义导航留空 */
+.today-container {
+  /* padding-top: 20rpx; */
+  background: #fff;
+}
+
+/* 内部列表 */
+.today-list {
+  padding: 20rpx;
+}
+
+/* 单道菜卡片 */
+.item {
+  display: flex;
+  margin-bottom: 20rpx;
+  border-radius: 12rpx;
+  background: #fafafa;
+  overflow: hidden;
+  /* 阴影（仅在真机可见） */
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+/* 左侧图片 */
+.item-image {
+  width: 180rpx;
+  height: 120rpx;
+}
+
+/* 右侧信息区 */
+.item-info {
+  flex: 1;
+  padding: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 标题行：名称 + 点赞 */
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-name {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+/* 点赞按钮（文字形式） */
+.like-wrapper {
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  background: #fff;
+  border: 1rpx solid #ddd;
+}
+.like-text {
+  font-size: 28rpx;
+}
+
+/* 摘要 */
+.item-summary {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 8rpx;
+}
+
+/* 点击反馈 */
+.tap-active {
+  opacity: 0.6;
+}
+
+/* 空列表提示 */
+.empty-tip {
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  margin-top: 200rpx;
+}
+
+.like-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 8rpx;
+}
+.like-count {
+  font-size: 28rpx;
+  color: #333;
+}

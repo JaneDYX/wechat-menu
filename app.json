@@ -1,24 +1,38 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/menu/menu",
+    "pages/detail/detail",
+    "pages/today/today",
+    "pages/profile/profile",
+    "pages/admin/menu",
+    "pages/admin/edit"
   ],
-  "window": {
-    "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
-  },
-  "style": "v2",
-  "renderer": "skyline",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "defaultContentBox": true,
-      "tagNameStyleIsolation": "legacy",
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
-  "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "window": { "navigationBarTitleText": "每日菜单" },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/menu/menu",
+        "text": "菜单",
+        "iconPath": "images/tab/menu.png",
+        "selectedIconPath": "images/tab/menu-active.png"
+      },
+      {
+        "pagePath": "pages/today/today",
+        "text": "今日",
+        "iconPath": "images/tab/today.png",
+        "selectedIconPath": "images/tab/today-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/profile.png",
+        "selectedIconPath": "images/tab/profile-active.png"
+      }
+    ],
+    "color": "#888888",
+    "selectedColor": "#0052CC",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black"
+  }
 }
