@@ -1,1 +1,126 @@
-/* pages/profile/profile.wxss */
+.container {
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+
+.avatar-wrp{
+  display:flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
+}
+.avatar{
+  height: 180rpx;
+  width: 180rpx;
+  border-radius:90rpx;
+  border: 4rpx solid #eee;
+}
+.nickname{
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin: 20rpx auto;
+}
+
+.info-wrp{
+  height: fit-content;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  margin: 20rpx auto;
+  padding: 20rpx;
+}
+.info{
+  font-size: 30rpx;
+  font-weight: bold;
+  display: flex;
+  margin: 10rpx auto;
+  padding-bottom: 20rpx;
+  color: #555;
+}
+.value{
+  font-size: 28rpx;
+  display: flex;
+  margin: 10rpx auto;
+  padding-bottom: 20rpx;
+  color: #555;
+}
+.userInfo{
+  display: flex;
+  flex-direction: row;
+  margin-top: 80rpx;
+  height: fit-content;
+  width: 80%;
+  border-radius: 15rpx;
+  border: 4rpx solid #074db6;
+  margin: 10rpx auto;
+}
+.infoBox{
+  margin: 10rpx auto;
+  padding: 10rpx;
+}
+.infoValue{
+  margin: 10rpx auto;
+  padding: 10rpx;
+}
+
+.liked-section {
+  background: #fff;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.dish {
+  display: flex;
+  height: fit-content;
+  width: 80%;
+  margin: 20rpx auto;
+  flex-direction: column;
+}
+
+.dish-img {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 20rpx;
+  margin: 20rpx 0;
+}
+.dish-info {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0;
+  flex-direction: row;
+}
+.dish-name {
+  font-size: 28rpx;
+  margin: 0 25rpx;
+}
+.likes{
+  font-size: 28rpx;
+  margin: 0 40rpx;
+}
+.btn-group {
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.logout-btn {
+  background-color: #2d56af;
+  color: white;
+  width:50%
+} 
+.edit-btn {
+  background-color: #7396e0;
+  color: white;
+  width:50%
+}
+/* .empty {
+  font-size: 28rpx;
+  color: #888;
+  margin-top: 10rpx;
+} */

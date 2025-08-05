@@ -1,8 +1,6 @@
 // app.js
 App({
-  data: {
-    AV: null,
-  },
+  AV: null,
   onLaunch(){
     this.initLeanCloud()
     console.log("app launched!")
@@ -10,22 +8,24 @@ App({
       success: (res) => {
         console.log(res.code)
 
-        console.log("AV object " + this.data.AV)
+        console.log("AV object " + this.AV)
 
-        var reqData = {
-          code: res.code,
-        };
+        var req_params = {
+          code: res.code
+        }
 
-        console.log(reqData)
-
-        this.data.AV.Cloud.run("getOpenId", reqData).then(
+        this.AV.Cloud.run("getOpenId", req_params).then(
           function (data) {
             // 处理结果
+            console.log(data)
+            const session_key = data.session_key;
+            const openid = data.openid;
 
-            console.log("调用成功" + JSON.stringify(data, null, 2))
+            wx.setStorageSync('session_key', session_key);
+            wx.setStorageSync('open_id', openid);
           },
           function (err) {
-            // 处理报错
+            // 处理报错s
             console.log("调用失败" + err)
           }
         );
@@ -36,7 +36,7 @@ App({
     // TODO, 可能把AV对象保存一下 不要当作临时变量
     const AV = require("./libs/av-core-min.js");
     const adapters = require("./libs/leancloud-adapters-weapp.js");
-
+    
     AV.setAdapters(adapters);
     console.log("sdk init")
 
@@ -46,6 +46,7 @@ App({
       serverURL: "https://jlnkho60.lc-cn-n1-shared.com",
     });
     
-    this.data.AV = AV
+    this.AV = AV;
+    console.log("AV 初始化完成");
   }
 })

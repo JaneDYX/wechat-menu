@@ -1,2 +1,41 @@
-<!--pages/profile/profile.wxml-->
-<text>pages/profile/profile.wxml</text>
+<scroll-view scroll-y="true" class="container">
+  <view class="avatar-wrp" bind:tap="chooseAvatar">
+    <image class="avatar" src="{{avatarurl|| '/images/tab/profile-def.png'}}" mode="aspectFill" ></image>
+    <text class="nickname">{{nickname || '未命名用户'}}</text>
+  </view>
+  <!-- 用户信息 -->
+  <view class="userInfo">
+    <view class="infoBox">
+      <text class="info">昵称</text>
+      <text class="info">电话号码</text>
+      <text class="info">邮箱</text>
+      <text class="info">OpenID</text>
+      <text class="info">用户身份</text>
+    </view>
+    <view class="infoValue">
+      <text class="value">{{username|| '未命名用户'}}</text>
+      <text class="value">{{mobileNumber || '未定义'}}</text>
+      <text class="value">{{Email || '未定义'}}</text>
+      <text class="value">{{OpenID ||'未定义'}}</text>
+      <text class="value">{{isAdmin ? '管理员' : '用户' }}</text>
+    </view>
+  </view>
+  <!-- 点赞过的菜 -->
+  <scroll-view class="liked-section" scroll-x="true" scroll-y="false">
+    <view class="dish">
+      <view class="dish-img">
+        <image class="dish-img" src='/images/recipes/qingjiao.jpg' />
+      </view>
+      <view class="dish-info">
+        <text class="dish-name">{{dishname ||'酿青椒'}}</text>
+        <text class="likes">{{likes||'0'}}</text>
+      </view>
+    </view>
+  </scroll-view>
+  <!-- 管理/退出按钮 -->
+  <view class="btn-group">
+    <button wx:if="{{isAdmin}}" bindtap="goAdmin" class="edit-btn">进入后台管理</button>
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+</scroll-view>
+

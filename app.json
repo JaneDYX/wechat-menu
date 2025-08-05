@@ -8,7 +8,7 @@
     "pages/admin/menu",
     "pages/admin/edit"
   ],
-  "window": { "navigationBarTitleText": "每日菜单" },
+  "window": { "navigationBarTitleText": "叮叮私房菜" },
   "tabBar": {
     "list": [
       {

@@ -1,66 +1,91 @@
 // pages/profile/profile.js
+const app = getApp();
+const AV = app.AV;
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    avatarUrl: '/images/tab/profile-def.png',
+    nickname: '',
+    openid: '',
+    isAdmin: wx.getStorageSync('isAdmin'),
+    username: '',
+    phone: '',
+    email: '',
+    likedDishes: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onLoad() {
+    const user = AV.User.current();
+    if (user) {
+      const avatar = user.get('avatarUrl') || '/images/tab/profile-def.png';
+      this.setData({
+        avatarUrl: avatar,
+        nickname: user.get('nickname') || '',
+        openid: user.get('openId') || '',
+        isAdmin: user.get('isAdmin') || false,
+        username: user.getUsername(),
+        phone: user.get('mobilePhoneNumber') || '',
+        email: user.getEmail() || ''
+      });
+      this.fetchLikedDishes(user);
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  fetchLikedDishes(user) {
+    const Like = AV.Object.extend('Like');
+    const query = new AV.Query(Like);
+    query.equalTo('user', user);
+    query.include('dish');
+    query.find().then(results => {
+      const likedDishes = results.map(like => {
+        const dish = like.get('dish');
+        return {
+          id: dish.id,
+          name: dish.get('name'),
+          image: dish.get('image')
+        };
+      });
+      this.setData({ likedDishes });
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
+  chooseAvatar() {
+    wx.chooseImage({
+      count: 1,
+      success: res => {
+        const filePath = res.tempFilePaths[0];
+        const fileName = `avatar_${Date.now()}.png`;
+        const file = new AV.File(fileName, {
+          blob: {
+            uri: filePath
+          }
+        });
 
+        wx.showLoading({ title: '上传中...' });
+        file.save().then(fileObj => {
+          const user = AV.User.current();
+          user.set('avatarUrl', fileObj.url());
+          return user.save();
+        }).then(() => {
+          wx.hideLoading();
+          wx.showToast({ title: '头像已更新' });
+          this.setData({ avatarUrl: filePath });
+        }).catch(err => {
+          wx.hideLoading();
+          wx.showToast({ title: '上传失败', icon: 'none' });
+          console.error(err);
+        });
+      }
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  logout() {
+    AV.User.logOut().then(() => {
+      wx.reLaunch({ url: '/pages/index/index' });
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  goAdmin() {
+    wx.navigateTo({ url: '/pages/admin/menu' });
   }
-})
+});

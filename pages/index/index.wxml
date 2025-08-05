@@ -1,14 +1,9 @@
-<navigation-bar title="叮叮车私房菜" back="{{false}}" color="black" background="#FFF"></navigation-bar>
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="container">
     <!-- logo 外层包裹，让它单独有上边距 -->
     <view class="logo-wrapper">
       <image src="/Images/Logo.jpeg" class="logo" mode="aspectFit" />
     </view>
-    <view class="btn-group">
-      <button class="btn primary" bindtap="goMenu">菜单列表</button>
-      <button class="btn secondary" bindtap="goToday">今日菜谱</button>
-      <button class="btn admin" bindtap="goAdmin">管理入口</button>
+    <button class="login-btn" bindtap="onLoginTap">微信一键登录</button>
     </view>
-  </view>
 </scroll-view>
