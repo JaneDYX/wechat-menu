@@ -1,7 +1,7 @@
 <scroll-view scroll-y="true" class="container">
   <view class="avatar-wrp" bind:tap="chooseAvatar">
-    <image class="avatar" src="{{avatarurl|| '/images/tab/laogong.jpeg'}}" mode="aspectFill" ></image>
-    <text class="nickname">{{nickname || '未命名用户'}}</text>
+    <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+    <text class="nickname">{{username}}</text>
   </view>
   <!-- 用户信息 -->
   <view class="userInfo">

@@ -1,0 +1,116 @@
+<!-- pages/admin/addDish.wxml -->
+<view class="add-dish-page">
+  <!-- 上传图片 -->
+  <view class="image-upload-section">
+    <image
+      src="{{imageUrl || '/images/recipes/upload.png'}}"
+      class="preview-image"
+      bindtap="chooseImage"
+      mode="aspectFill"
+    />
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-section">
+    <!-- 菜名 -->
+    <view class="form-row">
+      <view class="form-label">菜名</view>
+      <input
+        class="form-input"
+        placeholder="请输入菜名"
+        value="{{name}}"
+        bindinput="onInputName"
+      />
+    </view>
+
+    <!-- 分类（复选多选） -->
+    <view class="form-row">
+      <view class="form-label">分类</view>
+      <checkbox-group bindchange="checkboxChange" class="checkbox-group">
+        <block
+          wx:for="{{items}}"
+          wx:for-item="item"
+          wx:for-index="idx"
+          wx:key="idx"
+        >
+          <label class="checkbox-item">
+            <checkbox
+              value="{{item.value}}"
+              checked="{{item.checked}}"
+              color="#09BB07"
+            />
+            <text class="checkbox-label">{{item.value}}</text>
+          </label>
+        </block>
+      </checkbox-group>
+    </view>
+
+    <!-- 简介 -->
+    <view class="form-row">
+      <view class="form-label">简介</view>
+      <input
+        class="form-input"
+        placeholder="简要描述这道菜"
+        value="{{summary}}"
+        bindinput="onInputSummary"
+      />
+    </view>
+
+    <!-- 原材料标题 -->
+    <view class="form-label" style="margin-top:30rpx;">原材料</view>
+
+    <!-- 原材料列表 -->
+    <block
+      wx:for="{{ingredients}}"
+      wx:for-item="item"
+      wx:for-index="index"
+      wx:key="index"
+    >
+      <view class="ingredient-row">
+        <input
+          class="ingredient-input"
+          placeholder="名称"
+          value="{{item.name}}"
+          bindinput="onIngredientInput"
+          data-field="name"
+          data-index="{{index}}"
+        />
+        <input
+          class="ingredient-input"
+          placeholder="用量"
+          value="{{item.amount}}"
+          bindinput="onIngredientInput"
+          data-field="amount"
+          data-index="{{index}}"
+        />
+        <input
+          class="ingredient-input"
+          placeholder="单价"
+          value="{{item.price}}"
+          type="number"
+          bindinput="onIngredientInput"
+          data-field="price"
+          data-index="{{index}}"
+        />
+        <image
+          src="/images/tab/minus.png"
+          class="remove-btn"
+          data-index="{{index}}"
+          bindtap="removeIngredient"
+        />
+        <block wx:if="{{ index === ingredients.length - 1 && (item.name || item.amount || item.price) }}">
+          <image
+            src="/images/tab/add.png"
+            class="add-btn"
+            bindtap="addIngredient"
+          />
+        </block>
+      </view>
+    </block>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="onSubmit">提交</button>
+  </view>
+</view>

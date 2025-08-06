@@ -1,5 +1,4 @@
 <!--pages/admin/menu.wxml-->
-<!--pages/menu/menu.wxml-->
 <view class="menu-page">
   <!-- 左侧：分类侧栏 -->
   <view class="category-list">
@@ -25,7 +24,6 @@
           <!-- 菜品图片 -->
           <image src="{{item.image}}" class="item-image" mode="aspectFill" />
 
-          <!-- 菜品信息：名称+加号在同一行，下面是摘要 -->
           <view class="item-info">
             <view class="item-header">
               <text class="item-name">{{item.name}}</text>
@@ -35,7 +33,7 @@
                 hover-class="tap-active"
                 class="add-wrapper"
               >
-                <image src="/images/tab/add.png" class="add-btn" />
+                <image src="/images/tab/minus.png" class="add-btn" />
               </view>
               
             </view>
@@ -43,6 +41,10 @@
           </view>
         </view>
       </block>
+    </view>
+    <view class="add-dish-btn" bindtap="goAddDish">
+      <image src="/images/tab/add.png" class="plus-icon" />
+      <text class="btn-text">添加菜品</text>
     </view>
   </scroll-view>
 </view>

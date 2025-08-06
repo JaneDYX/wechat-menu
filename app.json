@@ -6,7 +6,8 @@
     "pages/today/today",
     "pages/profile/profile",
     "pages/admin/menu",
-    "pages/admin/edit"
+    "pages/admin/edit",
+    "pages/admin/addDish"
   ],
   "window": { "navigationBarTitleText": "叮叮私房菜" },
   "tabBar": {

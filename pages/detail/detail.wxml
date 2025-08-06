@@ -1,2 +1,51 @@
-<!--pages/detail/detail.wxml-->
-<text>pages/detail/detail.wxml</text>
+<!-- pages/detail/detail.wxml -->
+<view class="detail-page">
+  <!-- 菜品大图 -->
+  <view class="image-section">
+    <image
+      src="{{imageUrl}}"
+      class="detail-image"
+      mode="aspectFill"
+    />
+  </view>
+
+  <!-- 文字信息区域 -->
+  <view class="info-section">
+    <!-- 菜名 -->
+    <view class="row">
+      <text class="label">菜名：</text>
+      <text class="value">{{name}}</text>
+    </view>
+
+    <!-- 分类 -->
+    <view class="row">
+      <text class="label">分类：</text>
+      <view class="category-list">
+        <block wx:for="{{categories}}" wx:key="index" wx:for-item="cat">
+          <text class="category-item">{{cat}}</text>
+        </block>
+      </view>
+    </view>
+
+    <!-- 简介 -->
+    <view class="row">
+      <text class="label">简介：</text>
+      <text class="value">{{summary}}</text>
+    </view>
+
+    <!-- 原材料 -->
+    <view class="section-title">原材料</view>
+    <view class="ingredients-header">
+      <text class="col">名称</text>
+      <text class="col">用量</text>
+      <text class="col">单价</text>
+    </view>
+    <block wx:for="{{ingredients}}" wx:key="index" wx:for-item="item">
+      <view class="ingredient-row">
+        <text class="col">{{item.name}}</text>
+        <text class="col">{{item.amount}}</text>
+        <text class="col">{{item.price}}</text>
+      </view>
+    </block>
+  </view>
+</view>

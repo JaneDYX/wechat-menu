@@ -1,66 +1,48 @@
 // pages/detail/detail.js
+const app = getApp();
+const AV = app.AV;
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    id: '',
+    name: '',
+    imageUrl: '/images/recipes/upload.png',
+    categories: [],
+    summary: '',
+    ingredients: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
+    const id = options.id;
+    this.setData({ id });
+    wx.showLoading({ title: '加载中...' });
 
-  },
+    const Dish = AV.Object.extend('Dish');
+    const query = new AV.Query(Dish);
+    query.get(id)
+      .then(obj => {
+        // 取字段
+        const name = obj.get('name');
+        const file = obj.get('image');
+        const imageUrl = file ? file.url() : '/images/recipes/default.png';
+        const categories = obj.get('categories') || [];
+        const summary = obj.get('summary') || '';
+        const ingredients = obj.get('ingredients') || [];
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+        this.setData({
+          name,
+          imageUrl,
+          categories,
+          summary,
+          ingredients
+        });
+      })
+      .catch(err => {
+        console.error('加载详情失败', err);
+        wx.showToast({ title: '加载失败', icon: 'none' });
+      })
+      .finally(() => {
+        wx.hideLoading();
+      });
   }
-})
+});

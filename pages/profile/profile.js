@@ -1,12 +1,9 @@
-// pages/profile/profile.js
 const app = getApp();
 const AV = app.AV;
-
 
 Page({
   data: {
     avatarUrl: '',
-    nickname: '',
     openid: '',
     isAdmin: false,
     username: '',
@@ -16,7 +13,6 @@ Page({
     likedDishes: []
   },
 
-
   onLoad() {
     const sessionToken = wx.getStorageSync('sessionToken');
     if (sessionToken) {
@@ -24,7 +20,6 @@ Page({
         console.log('profile会话恢复成功:', user.toJSON());
 
         const avatar = user.get('avatarUrl') || '/images/tab/profile-def.png';
-        const nickname = user.get('nickname') || '';
         const username = user.getUsername() || '';
         const openid = user.get('openId') || '';
         const phone = user.get('mobilePhoneNumber') || '';
@@ -33,7 +28,6 @@ Page({
 
         this.setData({
           avatarUrl: avatar,
-          nickname,
           username,
           openid,
           phone,
@@ -46,16 +40,16 @@ Page({
         console.error('恢复失败:', err);
       });
     } else {
-      console.warn('无 sessionToken，请先登录');
+      console.warn('⚠️ 无 sessionToken，请先登录');
     }
   },
 
-
+  // 暂未使用
   fetchLikedDishes(user) {
-    const Like = AV.Object.extend('Like');
-    const query = new AV.Query(Like);
-    query.equalTo('user', user);
-    query.include('dish');
+    // const Like = AV.Object.extend('Like');
+    // const query = new AV.Query(Like);
+    // query.equalTo('user', user);
+    // query.include('dish');
     // query.find().then(results => {
     //   const likedDishes = results.map(like => {
     //     const dish = like.get('dish');
@@ -72,6 +66,7 @@ Page({
   chooseAvatar() {
     wx.chooseImage({
       count: 1,
+      sizeType: ['compressed'],
       success: res => {
         const filePath = res.tempFilePaths[0];
         const fileName = `avatar_${Date.now()}.png`;
@@ -82,18 +77,23 @@ Page({
         });
 
         wx.showLoading({ title: '上传中...' });
+
         file.save().then(fileObj => {
           const user = AV.User.current();
-          user.set('avatarUrl', fileObj.url());
-          return user.save();
-        }).then(() => {
+          const fileUrl = fileObj.url();
+          user.set('avatarUrl', fileUrl);
+          return user.save().then(() => fileUrl);
+        }).then(async (fileUrl) => {
+          await AV.User.current().fetch(); // 强制刷新
           wx.hideLoading();
           wx.showToast({ title: '头像已更新' });
-          this.setData({ avatarUrl: filePath });
+          this.setData({
+            avatarUrl: fileUrl.replace(/^http:/, 'https:') + '?t=' + Date.now() // 加时间戳防缓存
+          });
         }).catch(err => {
           wx.hideLoading();
           wx.showToast({ title: '上传失败', icon: 'none' });
-          console.error(err);
+          console.error('❌ 上传头像失败:', err);
         });
       }
     });
@@ -102,16 +102,32 @@ Page({
   startEditUsername() {
     this.setData({ isEditingUsername: true });
   },
-  
+
   onUsernameInput(e) {
     this.setData({ username: e.detail.value });
   },
-  
-  confirmUsername() {
-    this.setData({ isEditingUsername: false });
 
+  confirmUsername() {
+    const newUsername = this.data.username.trim();
+    if (!newUsername) {
+      wx.showToast({ title: '昵称不能为空', icon: 'none' });
+      return;
+    }
+
+    const user = AV.User.current();
+    user.setUsername(newUsername);
+    user.save().then(() => {
+      wx.showToast({ title: '昵称已更新' });
+      this.setData({
+        isEditingUsername: false,
+        username: newUsername
+      });
+    }).catch(err => {
+      console.error('❌ 昵称更新失败:', err);
+      wx.showToast({ title: '更新失败', icon: 'none' });
+    });
   },
-  
+
   logout() {
     AV.User.logOut().then(() => {
       wx.reLaunch({ url: '/pages/index/index' });

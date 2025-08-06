@@ -83,3 +83,24 @@
   color: #666;
   margin-top: 10rpx;
 }
+.add-dish-btn {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  background-color: #ff7043;
+  color: white;
+  padding: 20rpx 30rpx;
+  border-radius: 50rpx;
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  z-index: 999;
+}
+.plus-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 10rpx;
+}
+.btn-text {
+  font-size: 28rpx;
+}

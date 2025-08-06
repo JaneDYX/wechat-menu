@@ -16,7 +16,6 @@ Page({
         const sessionToken = user.sessionToken;
         const isAdmin = user.isAdmin;
         AV.User.become(sessionToken).then(loggedInUser => {
-          console.log('登录成功：', loggedInUser.toJSON());
           wx.setStorageSync('sessionToken', sessionToken);
           wx.setStorageSync('isAdmin', isAdmin);
         wx.hideLoading();
@@ -30,11 +29,9 @@ Page({
       });
   },
   onLoad() {
-    console.log(JSON.stringify(this.data, null, 2))
     this.setData({
       isAdmin: wx.getStorageSync('isAdmin')
     });
-    console.log(JSON.stringify(this.data, null, 2))
   },
 });
 

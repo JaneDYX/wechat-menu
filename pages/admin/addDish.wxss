@@ -1,0 +1,107 @@
+.add-dish-page {
+  padding: 20rpx;
+}
+
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+  border-radius: 25rpx;
+}
+.preview-image {
+  width: 90%;
+  margin-top: 10rpx;
+  border-radius: 20rpx;
+  overflow: hidden; 
+}
+
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.input,
+.textarea,
+.picker-text {
+  width: 100%;
+  padding: 10rpx;
+  border: 1px solid #ccc;
+  border-radius: 8rpx;
+  background-color: #fff;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 150rpx; /* 对齐到左侧标签 */
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-right: 20rpx;
+  margin-bottom: 10rpx;
+}
+.checkbox-label {
+  margin-left: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.submit-btn {
+  margin-top: 40rpx;
+  background-color: #0777c1;
+  color: white;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0;
+}
+
+.form-label {
+  width: 150rpx;
+  font-weight: bold;
+  color: #333;
+  font-size: 30rpx;
+}
+
+.form-input {
+  flex: 1;
+  padding: 16rpx;
+  border-bottom: 1px solid #ccc;
+  font-size: 28rpx;
+}
+.ingredient-row {
+  display: flex;
+  align-items: center;
+  margin: 16rpx 0;
+}
+
+.ingredient-input {
+  flex: 1;
+  margin-right: 10rpx;
+  padding: 12rpx;
+  border-bottom: 1px solid #ddd;
+  font-size: 28rpx;
+}
+
+.add-btn {
+  width: 60rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+.remove-btn {
+  width: 60rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  margin-left: 10rpx;
+}
