@@ -1,5 +1,4 @@
 .container {
-  /* height: 100vh; */
   display: flex;
   flex-direction: column;
 }
@@ -112,15 +111,25 @@
 .logout-btn {
   background-color: #2d56af;
   color: white;
-  width:50%
+  width:50%;
 } 
 .edit-btn {
   background-color: #7396e0;
   color: white;
-  width:50%
+  width:50%;
 }
 /* .empty {
   font-size: 28rpx;
   color: #888;
   margin-top: 10rpx;
 } */
+.value-edit-line{
+  display:flex;
+  flex-direction: column;
+}
+.value-input{
+  margin: 0 auto;
+}
+.confirm-btn{
+  margin: 0 auto;
+}

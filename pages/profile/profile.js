@@ -2,51 +2,71 @@
 const app = getApp();
 const AV = app.AV;
 
+
 Page({
   data: {
-    avatarUrl: '/images/tab/profile-def.png',
+    avatarUrl: '',
     nickname: '',
     openid: '',
-    isAdmin: wx.getStorageSync('isAdmin'),
+    isAdmin: false,
     username: '',
+    isEditingUsername: false,
     phone: '',
     email: '',
     likedDishes: []
   },
 
+
   onLoad() {
-    const user = AV.User.current();
-    if (user) {
-      const avatar = user.get('avatarUrl') || '/images/tab/profile-def.png';
-      this.setData({
-        avatarUrl: avatar,
-        nickname: user.get('nickname') || '',
-        openid: user.get('openId') || '',
-        isAdmin: user.get('isAdmin') || false,
-        username: user.getUsername(),
-        phone: user.get('mobilePhoneNumber') || '',
-        email: user.getEmail() || ''
+    const sessionToken = wx.getStorageSync('sessionToken');
+    if (sessionToken) {
+      AV.User.become(sessionToken).then(user => {
+        console.log('profile会话恢复成功:', user.toJSON());
+
+        const avatar = user.get('avatarUrl') || '/images/tab/profile-def.png';
+        const nickname = user.get('nickname') || '';
+        const username = user.getUsername() || '';
+        const openid = user.get('openId') || '';
+        const phone = user.get('mobilePhoneNumber') || '';
+        const email = user.getEmail() || '';
+        const isAdmin = user.get('isAdmin') || false;
+
+        this.setData({
+          avatarUrl: avatar,
+          nickname,
+          username,
+          openid,
+          phone,
+          email,
+          isAdmin
+        });
+
+        this.fetchLikedDishes(user);
+      }).catch(err => {
+        console.error('恢复失败:', err);
       });
-      this.fetchLikedDishes(user);
+    } else {
+      console.warn('无 sessionToken，请先登录');
     }
   },
+
 
   fetchLikedDishes(user) {
     const Like = AV.Object.extend('Like');
     const query = new AV.Query(Like);
     query.equalTo('user', user);
     query.include('dish');
-    query.find().then(results => {
-      const likedDishes = results.map(like => {
-        const dish = like.get('dish');
-        return {
-          id: dish.id,
-          name: dish.get('name'),
-          image: dish.get('image')
-        };
-      });
-      this.setData({ likedDishes });
-    });
+    // query.find().then(results => {
+    //   const likedDishes = results.map(like => {
+    //     const dish = like.get('dish');
+    //     return {
+    //       id: dish.id,
+    //       name: dish.get('name'),
+    //       image: dish.get('image')
+    //     };
+    //   });
+    //   this.setData({ likedDishes });
+    // });
   },
 
   chooseAvatar() {
@@ -79,6 +99,19 @@ Page({
     });
   },
 
+  startEditUsername() {
+    this.setData({ isEditingUsername: true });
+  },
+  
+  onUsernameInput(e) {
+    this.setData({ username: e.detail.value });
+  },
+  
+  confirmUsername() {
+    this.setData({ isEditingUsername: false });
+
+  },
+  
   logout() {
     AV.User.logOut().then(() => {
       wx.reLaunch({ url: '/pages/index/index' });

@@ -1,6 +1,6 @@
 <scroll-view scroll-y="true" class="container">
   <view class="avatar-wrp" bind:tap="chooseAvatar">
-    <image class="avatar" src="{{avatarurl|| '/images/tab/profile-def.png'}}" mode="aspectFill" ></image>
+    <image class="avatar" src="{{avatarurl|| '/images/tab/laogong.jpeg'}}" mode="aspectFill" ></image>
     <text class="nickname">{{nickname || '未命名用户'}}</text>
   </view>
   <!-- 用户信息 -->
@@ -13,7 +13,15 @@
       <text class="info">用户身份</text>
     </view>
     <view class="infoValue">
-      <text class="value">{{username|| '未命名用户'}}</text>
+      <view class="value-edit-line">
+        <block wx:if="{{isEditingUsername}}">
+          <input class="value-input" value="{{username}}" bindinput="onUsernameInput" />
+          <button class="confirm-btn" size="mini" bindtap="confirmUsername">✔</button>
+        </block>
+        <block wx:else>
+          <text class="value" bindtap="startEditUsername">{{username || '未命名用户'}}</text>
+        </block>
+      </view>
       <text class="value">{{mobileNumber || '未定义'}}</text>
       <text class="value">{{Email || '未定义'}}</text>
       <text class="value">{{OpenID ||'未定义'}}</text>
