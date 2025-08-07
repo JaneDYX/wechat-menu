@@ -36,6 +36,7 @@ Page({
         });
 
         this.fetchLikedDishes(user);
+        this.fetchDailyCosts(user);
       }).catch(err => {
         console.error('恢复失败:', err);
       });
@@ -127,6 +128,27 @@ Page({
       wx.showToast({ title: '更新失败', icon: 'none' });
     });
   },
+  fetchDailyCosts(user) {
+    const Summary = AV.Object.extend('DailySummary');
+    const query = new AV.Query(Summary);
+    query.equalTo('owner', user);
+    query.descending('date');
+    query.limit(7); // 近7天
+    query.find().then(results => {
+      const dailyCosts = results.map(obj => {
+        const date = new Date(obj.get('date'));
+        const cost = obj.get('totalCost') || 0;
+        return {
+          dateStr: `${date.getMonth() + 1}月${date.getDate()}日`,
+          costStr: `¥${cost.toFixed(2)}`
+        };
+      });
+      this.setData({ dailyCosts });
+    }).catch(err => {
+      console.error('获取每日消费失败:', err);
+    });
+  },
+  
 
   logout() {
     AV.User.logOut().then(() => {

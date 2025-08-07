@@ -61,47 +61,56 @@ Page({
   // 添加到“今日”
   addToToday(e) {
     const dishId = e.currentTarget.dataset.id;
-    // 1. 准备当天 00:00 的 Date
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-
-    // 2. 构造 Today Class 和 Dish 指针
-    const Today = AV.Object.extend('Today');
-    const dishPointer = AV.Object.createWithoutData('Dish', dishId);
-    const currentUser = AV.User.current();
-
-
-    // 3. 先查有没有重复
-    const q = new AV.Query(Today);
-    q.equalTo('date', todayStart);
-    q.equalTo('dish', dishPointer);
-    q.first()
-      .then(existing => {
-        if (existing) {
-          // 已经添加过
-          return Promise.reject('already');
-        }
-        // 4. 新建一条 Today 记录
-        const rec = new Today();
-        rec.set('date', todayStart);
-        rec.set('dish', dishPointer);
-        rec.set('meal', 'lunch');
-        rec.set('owner', currentUser);
-
-        return rec.save();
-      })
-      .then(() => {
-        wx.showToast({ title: '已添加到今日', icon: 'success' });
-      })
-      .catch(err => {
-        if (err === 'already') {
-          wx.showToast({ title: '已在今日菜单，无需重复添加', icon: 'none' });
-        } else {
-          console.error('添加到今日出错', err);
-          wx.showToast({ title: '添加失败，请重试', icon: 'none' });
-        }
-      });
+  
+    wx.showActionSheet({
+      itemList: ['早餐', '午餐', '晚餐'],
+      success: res => {
+        const mealMap = ['breakfast', 'lunch', 'dinner'];
+        const selectedMeal = mealMap[res.tapIndex];
+  
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+  
+        const Today = AV.Object.extend('Today');
+        const dishPointer = AV.Object.createWithoutData('Dish', dishId);
+        const currentUser = AV.User.current();
+  
+        const q = new AV.Query(Today);
+        q.equalTo('date', todayStart);
+        q.equalTo('dish', dishPointer);
+        q.equalTo('meal', selectedMeal); // 👈 防止同一餐重复添加
+        q.equalTo('owner', currentUser);
+  
+        q.first()
+          .then(existing => {
+            if (existing) {
+              return Promise.reject('already');
+            }
+            const rec = new Today();
+            rec.set('date', todayStart);
+            rec.set('dish', dishPointer);
+            rec.set('meal', selectedMeal);
+            rec.set('owner', currentUser);
+            return rec.save();
+          })
+          .then(() => {
+            wx.showToast({ title: '已添加到今日', icon: 'success' });
+          })
+          .catch(err => {
+            if (err === 'already') {
+              wx.showToast({ title: '该菜已添加到该餐，无需重复添加', icon: 'none' });
+            } else {
+              console.error('添加到今日出错', err);
+              wx.showToast({ title: '添加失败，请重试', icon: 'none' });
+            }
+          });
+      },
+      fail: () => {
+        // 用户取消选择，不做任何操作
+      }
+    });
   },
+  
 
   goDetail(e) {
     const id = e.currentTarget.dataset.id;

@@ -131,55 +131,100 @@ Page({
      });
   },
 
-  onLongPress() {
-    this.setData({ dragEnabled: true });
+  // onLongPress() {
+  //   this.setData({ dragEnabled: true });
+  // },
+
+  // onDragEnd(e) {
+  //   if (!this.areaRects) {
+  //     this.setData({ dragEnabled: false });
+  //     return;
+  //   }
+
+  //   const historyId = e.currentTarget.dataset.historyId;
+  //   const fromMeal  = e.currentTarget.dataset.meal;
+  //   const { pageX, pageY } = e.changedTouches[0];
+  //   let newMeal = fromMeal;
+  //   const { breakfast, lunch, dinner } = this.areaRects;
+
+  //   if (pageY >= breakfast.top && pageY <= breakfast.bottom)      newMeal = 'breakfast';
+  //   else if (pageY >= lunch.top     && pageY <= lunch.bottom)    newMeal = 'lunch';
+  //   else if (pageY >= dinner.top    && pageY <= dinner.bottom)   newMeal = 'dinner';
+
+  //   const mapName = { breakfast:'breakfastList', lunch:'lunchList', dinner:'dinnerList' };
+  //   const listArr = this.data[ mapName[newMeal] ];
+  //   const offsetX = pageX - this.areaRects[newMeal].left;
+  //   const newIndex = Math.min(
+  //     listArr.length-1,
+  //     Math.max(0, Math.round(offsetX / this.itemWidthPx))
+  //   );
+
+  //   this._moveItemInData(historyId, fromMeal, newMeal, newIndex);
+
+  //   const Today = AV.Object.extend('Today');
+  //   const obj   = AV.Object.createWithoutData('Today', historyId);
+  //   obj.set('meal',  newMeal);
+  //   obj.set('order', newIndex);
+  //   obj.save().catch(console.error);
+
+  //   this.setData({ dragEnabled: false });
+  // },
+
+  // _moveItemInData(id, fromMeal, toMeal, toIndex) {
+  //   const map   = { breakfast:'breakfastList', lunch:'lunchList', dinner:'dinnerList' };
+  //   const fromA = [...this.data[ map[fromMeal] ]];
+  //   const toA   = [...this.data[ map[toMeal]   ]];
+  //   const idx   = fromA.findIndex(i => i.historyId === id);
+  //   const [itm] = fromA.splice(idx, 1);
+  //   toA.splice(toIndex, 0, itm);
+  //   this.setData({
+  //     [map[fromMeal]]: fromA,
+  //     [map[toMeal]]:   toA
+  //   });
+  // }
+
+  onDeleteMeal(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '删除确认',
+      content: '确定要从今日菜单中删除这道菜吗？',
+      success: res => {
+        if (res.confirm) {
+          const Today = AV.Object.createWithoutData('Today', id);
+          Today.destroy()
+            .then(() => {
+              wx.showToast({ title: '删除成功' });
+              this.loadToday(); // 重新加载
+            })
+            .catch(err => {
+              console.error('删除失败', err);
+              wx.showToast({ title: '删除失败', icon: 'none' });
+            });
+        }
+      }
+    });
   },
-
-  onDragEnd(e) {
-    if (!this.areaRects) {
-      this.setData({ dragEnabled: false });
-      return;
-    }
-
-    const historyId = e.currentTarget.dataset.historyId;
-    const fromMeal  = e.currentTarget.dataset.meal;
-    const { pageX, pageY } = e.changedTouches[0];
-    let newMeal = fromMeal;
-    const { breakfast, lunch, dinner } = this.areaRects;
-
-    if (pageY >= breakfast.top && pageY <= breakfast.bottom)      newMeal = 'breakfast';
-    else if (pageY >= lunch.top     && pageY <= lunch.bottom)    newMeal = 'lunch';
-    else if (pageY >= dinner.top    && pageY <= dinner.bottom)   newMeal = 'dinner';
-
-    const mapName = { breakfast:'breakfastList', lunch:'lunchList', dinner:'dinnerList' };
-    const listArr = this.data[ mapName[newMeal] ];
-    const offsetX = pageX - this.areaRects[newMeal].left;
-    const newIndex = Math.min(
-      listArr.length-1,
-      Math.max(0, Math.round(offsetX / this.itemWidthPx))
-    );
-
-    this._moveItemInData(historyId, fromMeal, newMeal, newIndex);
-
-    const Today = AV.Object.extend('Today');
-    const obj   = AV.Object.createWithoutData('Today', historyId);
-    obj.set('meal',  newMeal);
-    obj.set('order', newIndex);
-    obj.save().catch(console.error);
-
-    this.setData({ dragEnabled: false });
-  },
-
-  _moveItemInData(id, fromMeal, toMeal, toIndex) {
-    const map   = { breakfast:'breakfastList', lunch:'lunchList', dinner:'dinnerList' };
-    const fromA = [...this.data[ map[fromMeal] ]];
-    const toA   = [...this.data[ map[toMeal]   ]];
-    const idx   = fromA.findIndex(i => i.historyId === id);
-    const [itm] = fromA.splice(idx, 1);
-    toA.splice(toIndex, 0, itm);
-    this.setData({
-      [map[fromMeal]]: fromA,
-      [map[toMeal]]:   toA
+  onEditMeal(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showActionSheet({
+      itemList: ['早餐', '午餐', '晚餐'],
+      success: res => {
+        const mealMap = ['breakfast', 'lunch', 'dinner'];
+        const selectedMeal = mealMap[res.tapIndex];
+  
+        const Today = AV.Object.createWithoutData('Today', id);
+        Today.set('meal', selectedMeal);
+        Today.save()
+          .then(() => {
+            wx.showToast({ title: '修改成功' });
+            this.loadToday();
+          })
+          .catch(err => {
+            console.error('修改失败', err);
+            wx.showToast({ title: '修改失败', icon: 'none' });
+          });
+      }
     });
   }
+    
 });

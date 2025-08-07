@@ -82,3 +82,16 @@
   color: #e91e63;
   font-weight: bold;
 }
+.minus-img{
+  width: 60rpx;
+  height: 60rpx;
+}
+.today-item-edit{
+  display: flex;
+}
+.today-item-actions {
+  margin-top: 8rpx;
+  display: flex;
+  gap: 20rpx;
+  align-items: center;
+}

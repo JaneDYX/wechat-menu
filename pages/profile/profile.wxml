@@ -28,6 +28,21 @@
       <text class="value">{{isAdmin ? '管理员' : '用户' }}</text>
     </view>
   </view>
+
+  <!-- 近日消费 -->
+  <view class="daily-cost-section">
+  <text class="section-title">最近 7 天花费</text>
+  <view class="cost-list">
+    <block wx:for="{{dailyCosts}}" wx:key="dateStr">
+      <view class="cost-row">
+        <text class="cost-date">{{item.dateStr}}</text>
+        <text class="cost-amount">{{item.costStr}}</text>
+      </view>
+    </block>
+  </view>
+</view>
+
+
   <!-- 点赞过的菜 -->
   <scroll-view class="liked-section" scroll-x="true" scroll-y="false">
     <view class="dish">
