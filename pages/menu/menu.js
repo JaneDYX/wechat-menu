@@ -9,27 +9,36 @@ Page({
     selectedCategory: '',  // 当前选中的分类名称
     filteredList: []       // 根据分类过滤后的菜品
   },
-
   onLoad() {
-    console.log('admin/menu onLoad，AV=', AV);
-    const Dish = AV.Object.extend('Dish');
+    this.loadMenu();
+  },
+
+  onShow() {
+    // 页面每次显示都刷新
+    this.loadMenu();
+  },
+  loadMenu() {
+    const Dish  = AV.Object.extend('Dish');
     const query = new AV.Query(Dish);
     query.find()
       .then(dishes => {
-        console.log('拉到的 dishes：', dishes);
         const menuList = dishes.map(obj => ({
           id: obj.id,
           name: obj.get('name'),
-          image: obj.get('image') ? obj.get('image').url() : '/images/recipes/default.png',
+          image: obj.get('image') 
+            ? obj.get('image').url() 
+            : '/images/recipes/default.png',
           categories: obj.get('categories') || [],
-          summary: (obj.get('ingredients') || []).map(i => i.name).join('，'),
+          summary: (obj.get('ingredients') || [])
+            .map(i => i.name).join('，'),
           ingredients: obj.get('ingredients') || []
         }));
 
-        const uniqueCats = Array.from(new Set(menuList.flatMap(d => d.categories)));
-        const categories = uniqueCats.map(name => ({ name, chars: name.split('') }));
+        // 分类逻辑同之前
+        const uniqueCats      = Array.from(new Set(menuList.flatMap(d => d.categories)));
+        const categories      = uniqueCats.map(name => ({ name, chars: name.split('') }));
         const selectedCategory = categories[0]?.name || '';
-        const filteredList = menuList.filter(d => d.categories.includes(selectedCategory));
+        const filteredList    = menuList.filter(d => d.categories.includes(selectedCategory));
 
         this.setData({ menuList, categories, selectedCategory, filteredList });
       })
@@ -49,17 +58,49 @@ Page({
     });
   },
 
-  // 添加到“今日”（示例：存本地）
+  // 添加到“今日”
   addToToday(e) {
-    const id = e.currentTarget.dataset.id;
-    const today = wx.getStorageSync('TODAY_MENU') || [];
-    if (today.find(d => d.id === id)) {
-      return wx.showToast({ title: '已在今日菜单', icon: 'none' });
-    }
-    const dish = this.data.menuList.find(d => d.id === id);
-    today.push(dish);
-    wx.setStorageSync('TODAY_MENU', today);
-    wx.showToast({ title: '已添加到今日', icon: 'success' });
+    const dishId = e.currentTarget.dataset.id;
+    // 1. 准备当天 00:00 的 Date
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    // 2. 构造 Today Class 和 Dish 指针
+    const Today = AV.Object.extend('Today');
+    const dishPointer = AV.Object.createWithoutData('Dish', dishId);
+    const currentUser = AV.User.current();
+
+
+    // 3. 先查有没有重复
+    const q = new AV.Query(Today);
+    q.equalTo('date', todayStart);
+    q.equalTo('dish', dishPointer);
+    q.first()
+      .then(existing => {
+        if (existing) {
+          // 已经添加过
+          return Promise.reject('already');
+        }
+        // 4. 新建一条 Today 记录
+        const rec = new Today();
+        rec.set('date', todayStart);
+        rec.set('dish', dishPointer);
+        rec.set('meal', 'lunch');
+        rec.set('owner', currentUser);
+
+        return rec.save();
+      })
+      .then(() => {
+        wx.showToast({ title: '已添加到今日', icon: 'success' });
+      })
+      .catch(err => {
+        if (err === 'already') {
+          wx.showToast({ title: '已在今日菜单，无需重复添加', icon: 'none' });
+        } else {
+          console.error('添加到今日出错', err);
+          wx.showToast({ title: '添加失败，请重试', icon: 'none' });
+        }
+      });
   },
 
   goDetail(e) {

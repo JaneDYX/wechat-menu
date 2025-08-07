@@ -1,4 +1,3 @@
-<!-- pages/admin/addDish.wxml -->
 <view class="add-dish-page">
   <!-- 上传图片 -->
   <view class="image-upload-section">
@@ -10,106 +9,131 @@
     />
   </view>
 
-  <!-- 表单区域 -->
-  <view class="form-section">
-    <!-- 菜名 -->
+  <!-- 菜名/分类/简介 -->
+  <view class="form-row">
+    <view class="form-label">菜名</view>
+    <input class="form-input" placeholder="请输入菜名" value="{{name}}" bindinput="onInputName"/>
+  </view>
+  <view class="form-row">
+    <view class="form-label">分类</view>
+    <checkbox-group bindchange="checkboxChange" class="checkbox-group">
+      <block wx:for="{{items}}" wx:key="value" wx:for-item="item">
+        <label class="checkbox-item">
+          <checkbox value="{{item.value}}" checked="{{item.checked}}" color="#09BB07" />
+          <text class="checkbox-label">{{item.value}}</text>
+        </label>
+      </block>
+    </checkbox-group>
+  </view>
+  <view class="form-row">
+    <view class="form-label">简介</view>
+    <input class="form-input" placeholder="简要描述这道菜" value="{{summary}}" bindinput="onInputSummary"/>
+  </view>
+
+  <!-- 原材料 -->
+  <view class="form-label" style="margin-top:30rpx;">原材料</view>
+
+  <!-- 板块一：已有原料 -->
+  <view class="section">
+    <view class="section-title">已有原料</view>
+    <!-- 快速添加已有原料 -->
     <view class="form-row">
-      <view class="form-label">菜名</view>
-      <input
-        class="form-input"
-        placeholder="请输入菜名"
-        value="{{name}}"
-        bindinput="onInputName"
-      />
+      <view class="form-label">添加已有</view>
+      <picker mode="selector" range="{{defs}}" range-key="name" bindchange="onSelectExisting">
+        <view class="form-input">{{selectedDefName || '请选择已有原料'}}</view>
+      </picker>
     </view>
-
-    <!-- 分类（复选多选） -->
-    <view class="form-row">
-      <view class="form-label">分类</view>
-      <checkbox-group bindchange="checkboxChange" class="checkbox-group">
-        <block
-          wx:for="{{items}}"
-          wx:for-item="item"
-          wx:for-index="idx"
-          wx:key="idx"
-        >
-          <label class="checkbox-item">
-            <checkbox
-              value="{{item.value}}"
-              checked="{{item.checked}}"
-              color="#09BB07"
-            />
-            <text class="checkbox-label">{{item.value}}</text>
-          </label>
-        </block>
-      </checkbox-group>
-    </view>
-
-    <!-- 简介 -->
-    <view class="form-row">
-      <view class="form-label">简介</view>
-      <input
-        class="form-input"
-        placeholder="简要描述这道菜"
-        value="{{summary}}"
-        bindinput="onInputSummary"
-      />
-    </view>
-
-    <!-- 原材料标题 -->
-    <view class="form-label" style="margin-top:30rpx;">原材料</view>
-
-    <!-- 原材料列表 -->
-    <block
-      wx:for="{{ingredients}}"
-      wx:for-item="item"
-      wx:for-index="index"
-      wx:key="index"
-    >
-      <view class="ingredient-row">
+    <!-- 已有原料列表 -->
+    <block wx:for="{{existingRows}}" wx:key="index" wx:for-index="index">
+      <view class="row panel">
+        <!-- 原料名称 -->
+        <view class="cell">{{existingRows[index].defName}}</view>
+        <!-- 单价 -->
+        <view class="cell">{{existingRows[index].unitPrice}}</view>
+        <!-- 用量 -->
         <input
-          class="ingredient-input"
-          placeholder="名称"
-          value="{{item.name}}"
-          bindinput="onIngredientInput"
-          data-field="name"
-          data-index="{{index}}"
-        />
-        <input
-          class="ingredient-input"
-          placeholder="用量"
-          value="{{item.amount}}"
-          bindinput="onIngredientInput"
-          data-field="amount"
-          data-index="{{index}}"
-        />
-        <input
-          class="ingredient-input"
-          placeholder="单价"
-          value="{{item.price}}"
+          class="cell input"
           type="number"
-          bindinput="onIngredientInput"
-          data-field="price"
+          placeholder="用量"
+          wx:if="{{existingRows[index].defId}}"
+          value="{{existingRows[index].usedAmount}}"
+          bindinput="onInputExistingUsed"
           data-index="{{index}}"
         />
+        <!-- 操作 -->
         <image
-          src="/images/tab/minus.png"
-          class="remove-btn"
+          src="../../images/tab/minus.png"
+          class="op-icon"
+          wx:if="{{existingRows[index].defId}}"
+          catchtap="removeExisting"
           data-index="{{index}}"
-          bindtap="removeIngredient"
         />
-        <block wx:if="{{ index === ingredients.length - 1 && (item.name || item.amount || item.price) }}">
-          <image
-            src="/images/tab/add.png"
-            class="add-btn"
-            bindtap="addIngredient"
-          />
-        </block>
+
       </view>
     </block>
   </view>
 
-  <!-- 提交按钮 -->
+  <!-- 板块二：新原料 -->
+  <view class="section" style="margin-top:40rpx;">
+    <view class="section-title">新原料</view>
+    <!-- 新增空白行 -->
+    <view class="form-row">
+
+    </view>
+    <!-- 新原料列表 -->
+    <block wx:for="{{newRows}}" wx:key="index" wx:for-index="index">
+      <view class="row panel">
+        <!-- 原料名称 -->
+        <input
+          class="cell input"
+          placeholder="原料名称"
+          value="{{newRows[index].customName}}"
+          bindinput="onInputNewName"
+          data-index="{{index}}"
+        />
+        <!-- 采购价 -->
+        <input
+          class="cell input"
+          type="number"
+          placeholder="总价"
+          value="{{newRows[index].totalPrice}}"
+          bindinput="onInputNewCost"
+          data-index="{{index}}"
+        />
+        <!-- 用量 -->
+        <input
+          class="cell input"
+          type="number"
+          placeholder="用量"
+          value="{{newRows[index].amount}}"
+          bindinput="onInputNewAmount"
+          data-index="{{index}}"
+        />
+        <!-- 操作 -->
+        <image
+          src="../../images/tab/minus.png"
+          class="op-icon"
+          wx:if="{{newRows.length>1}}"
+          catchtap="removeNew"
+          data-index="{{index}}"
+        />
+        <image
+          src="../../images/tab/add.png"
+          class="op-icon"
+          wx:if="{{index===newRows.length-1}}"
+          catchtap="addNew"
+          data-index="{{index}}"
+        />
+      </view>
+    </block>
+  </view>
+
+  <!-- 实时总成本 -->
+  <view class="cost-display">
+    <text>当前总成本：{{totalCost}} 元</text>
+  </view>
+
+  <!-- 提交 -->
   <view class="submit-section">
     <button class="submit-btn" bindtap="onSubmit">提交</button>
   </view>

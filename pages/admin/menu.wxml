@@ -28,12 +28,12 @@
             <view class="item-header">
               <text class="item-name">{{item.name}}</text>
               <view
-                catch:tap="addToToday"
+                catch:tap="deleteDish"
                 data-id="{{item.id}}"
                 hover-class="tap-active"
                 class="add-wrapper"
               >
-                <image src="/images/tab/minus.png" class="add-btn" />
+                <image src="/images/tab/minus.png" class="delete-btn" />
               </view>
               
             </view>

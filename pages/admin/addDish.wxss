@@ -1,107 +1,100 @@
 .add-dish-page {
   padding: 20rpx;
+  width: 90%;
+  margin: auto;
 }
 
 .image-upload-section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin-bottom: 40rpx;
-  border-radius: 25rpx;
 }
 .preview-image {
-  width: 90%;
-  margin-top: 10rpx;
-  border-radius: 20rpx;
-  overflow: hidden; 
-}
-
-
-.form-item {
-  margin-bottom: 20rpx;
-}
-
-.label {
-  font-weight: bold;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.input,
-.textarea,
-.picker-text {
   width: 100%;
-  padding: 10rpx;
-  border: 1px solid #ccc;
-  border-radius: 8rpx;
-  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
 }
 
-.checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 150rpx; /* 对齐到左侧标签 */
-}
-.checkbox-item {
-  display: flex;
-  align-items: center;
-  margin-right: 20rpx;
-  margin-bottom: 10rpx;
-}
-.checkbox-label {
-  margin-left: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.submit-btn {
-  margin-top: 40rpx;
-  background-color: #0777c1;
-  color: white;
-}
 .form-row {
   display: flex;
   align-items: center;
   margin: 20rpx 0;
 }
-
 .form-label {
   width: 150rpx;
   font-weight: bold;
-  color: #333;
   font-size: 30rpx;
 }
-
 .form-input {
   flex: 1;
   padding: 16rpx;
   border-bottom: 1px solid #ccc;
   font-size: 28rpx;
 }
-.ingredient-row {
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 150rpx;
+}
+.checkbox-item {
   display: flex;
   align-items: center;
-  margin: 16rpx 0;
+  margin-right: 20rpx;
 }
-
-.ingredient-input {
-  flex: 1;
-  margin-right: 10rpx;
-  padding: 12rpx;
-  border-bottom: 1px solid #ddd;
+.checkbox-label {
+  margin-left: 8rpx;
   font-size: 28rpx;
 }
 
-.add-btn {
-  width: 60rpx;
-  height: 60rpx;
-  line-height: 60rpx;
-  text-align: center;
+.section {
+  border-top: 1rpx solid #eee;
+  padding-top: 16rpx;
 }
-.remove-btn {
-  width: 60rpx;
-  height: 60rpx;
-  line-height: 60rpx;
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 12rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+.cell {
+  flex: 1;
   text-align: center;
-  margin-left: 10rpx;
+  font-size: 28rpx;
+}
+.input {
+  flex: 1;
+  padding: 8rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+}
+.op-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-left: 12rpx;
+}
+
+.cost-display {
+  margin: 20rpx 0;
+  text-align: center;
+  font-size: 32rpx;
+  color: #e64340;
+}
+
+.submit-section {
+  margin-top: 40rpx;
+}
+.submit-btn {
+  width: 100%;
+  height: 80rpx;
+  background-color: #0777c1;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 32rpx;
 }

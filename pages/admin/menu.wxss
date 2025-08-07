@@ -67,8 +67,7 @@
   font-weight: bold;
 }
 
-/* 加号图片 */
-.add-btn {
+.delete-btn {
   width: 40rpx;
   height: 40rpx;
 }
