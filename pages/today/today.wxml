@@ -1,72 +1,77 @@
-<!-- pages/today/today.wxml -->
-<scroll-view class="today-container" scroll-y>
-  <!-- 早餐区 -->
-  <view class="meal-section">
-    <text class="meal-title">早餐</text>
-    <view class="meal-area">
-      <block wx:for="{{breakfastList}}" wx:for-item="item" wx:key="historyId">
-        <view class="today-item">
-          <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
-          <view class="today-item-info">
-            <view class="today-item-header">
-              <text class="today-item-name">{{item.name}}</text>
-              <text class="today-item-price">¥{{item.total.toFixed(2)}}</text>
+<view class="today-container">
+  <scroll-view
+    scroll-y
+    class="list"
+    style="padding-bottom: 120rpx;"
+  >
+    <!-- 早餐区 -->
+    <view id="breakfastArea" class="meal-section">
+      <text class="meal-title">早餐</text>
+      <view class="meal-area">
+        <block wx:for="{{breakfastList}}" wx:for-item="item" wx:key="historyId">
+          <view class="today-item">
+            <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
+            <view class="today-item-info">
+              <view class="today-item-header">
+                <text class="today-item-name">{{item.name}}</text>
+                <text class="today-item-price">¥{{item.totalStr}}</text>
+              </view>
+              <text class="today-item-summary">{{item.summary}}</text>
             </view>
-            <text class="today-item-summary">{{item.summary}}</text>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
-  </view>
 
-  <!-- 午餐区 -->
-  <view class="meal-section">
-    <text class="meal-title">午餐</text>
-    <view class="meal-area">
-      <block wx:for="{{lunchList}}" wx:for-item="item" wx:key="historyId">
-        <view class="today-item">
-          <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
-          <view class="today-item-info">
-            <view class="today-item-header">
-              <text class="today-item-name">{{item.name}}</text>
-              <text class="today-item-price">¥{{item.total.toFixed(2)}}</text>
+    <!-- 午餐区 -->
+    <view id="lunchArea" class="meal-section">
+      <text class="meal-title">午餐</text>
+      <view class="meal-area">
+        <block wx:for="{{lunchList}}" wx:for-item="item" wx:key="historyId">
+          <view class="today-item">
+            <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
+            <view class="today-item-info">
+              <view class="today-item-header">
+                <text class="today-item-name">{{item.name}}</text>
+                <text class="today-item-price">¥{{item.totalStr}}</text>
+              </view>
+              <text class="today-item-summary">{{item.summary}}</text>
             </view>
-            <text class="today-item-summary">{{item.summary}}</text>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
-  </view>
 
-  <!-- 晚餐区 -->
-  <view class="meal-section">
-    <text class="meal-title">晚餐</text>
-    <view class="meal-area">
-      <block wx:for="{{dinnerList}}" wx:for-item="item" wx:key="historyId">
-        <view class="today-item">
-          <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
-          <view class="today-item-info">
-            <view class="today-item-header">
-              <text class="today-item-name">{{item.name}}</text>
-              <text class="today-item-price">¥{{item.total.toFixed(2)}}</text>
+    <!-- 晚餐区 -->
+    <view id="dinnerArea" class="meal-section">
+      <text class="meal-title">晚餐</text>
+      <view class="meal-area">
+        <block wx:for="{{dinnerList}}" wx:for-item="item" wx:key="historyId">
+          <view class="today-item">
+            <image src="{{item.image}}" class="today-item-image" mode="aspectFill"/>
+            <view class="today-item-info">
+              <view class="today-item-header">
+                <text class="today-item-name">{{item.name}}</text>
+                <text class="today-item-price">¥{{item.totalStr}}</text>
+              </view>
+              <text class="today-item-summary">{{item.summary}}</text>
             </view>
-            <text class="today-item-summary">{{item.summary}}</text>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
-  </view>
 
-  <!-- 空状态提示 -->
-  <block wx:if="{{!breakfastList.length && !lunchList.length && !dinnerList.length}}">
-    <view class="empty-tip">
-      今天还没添加任何菜，快去菜单页挑几道吧～
-    </view>
-  </block>
+    <!-- 空状态提示 -->
+    <block wx:if="{{!breakfastList.length && !lunchList.length && !dinnerList.length}}">
+      <view class="empty-tip">
+        今天还没添加任何菜，快去菜单页挑几道吧～
+      </view>
+    </block>
+  </scroll-view>
 
   <!-- 今日总价 -->
   <view class="total-bar">
     <text class="total-label">今日总价：</text>
-    <text class="total-value">¥{{totalPrice.toFixed(2)}}</text>
+    <text class="total-value">¥{{totalPriceStr}}</text>
   </view>
-</scroll-view>
+</view>

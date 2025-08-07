@@ -34,5 +34,5 @@
 
 1. **克隆仓库**  
    ```bash
-   git clone https://github.com/<你的仓库>/menu.git
+   git clone https://github.com/JaneDYX/wechat-menu/menu.git
    cd menu
